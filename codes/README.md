@@ -1,26 +1,9 @@
 # README
 
-A image recognition task.
+codes for scene classification.
 
-Imagenette : see https://github.com/fastai/imagenette
+`ano_runner.py` is used to train the model.
 
-model: wide resnet50-2
+`runner.py` is used to predcit the results.
 
-For training：
-
-```python
-python runner.py --cuda='cuda:2' --model='wide_resnet50_2' --save_path='./wide_resnet50_2_from_scratch_lr=4.pth' --log_dir='log_wide_resnet50_2_from_scratch_lr=4' --epochs=500 --lr=1e-4 --batch-size=32 --mode='train' --seed=1111
-```
-
-For testing:
-
-```python
-python runner.py --cuda='cuda:4' --model='wide_resnet50_2' --model_params_path='./wide_resnet50_2_from_scratch_lr=4.pth' --log_dir='log_wide_resnet50_2_from_scratch_lr=4' --mode='test'
-```
-
-Final acc: $92.2\pm0.8$%。
-
-The trianed model is too big, so I didn't put it on github.
-
-For more information, see my report.
-
+remember to save predictions in `csv` dir. Then run `bagging.py` to ensemble.

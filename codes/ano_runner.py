@@ -45,6 +45,7 @@ class LabelSmoothCELoss(nn.Module):
         loss = loss.mean()
 
         return loss
+
 class SceneDataset(Dataset):
     def __init__(self, annotations_csv, root_dir, transform=None):
         self.annotations = pd.read_csv(annotations_csv)
@@ -129,7 +130,7 @@ def main():
     parser.add_argument('--weight_decay', '-w', default=5e-4, type=float, help='weight_decay')
     parser.add_argument('--batch_size', default=128, type=int, help='training batch size')
     parser.add_argument('--output_dir', default='./checkpoint' ,type=str)
-    parser.add_argument('--warm_up_epochs', default=10,type=int)
+    parser.add_argument('--warm_up_epochs', default=10, type=int)
     parser.add_argument('--log_file', type=str, default='./log/default.log')
     parser.add_argument('--params', type=str, default=None)
     args = parser.parse_args()
