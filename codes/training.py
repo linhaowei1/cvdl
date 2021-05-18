@@ -203,8 +203,8 @@ def main():
         model.load_state_dict(torch.load(args.params, map_location=device))
 
 
-    #optimizer = optim.SGD(model.parameters(), lr=args.lr,momentum=0.9, weight_decay=args.weight_decay)
-    optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    optimizer = optim.SGD(model.parameters(), lr=args.lr,momentum=0.9, weight_decay=args.weight_decay)
+    #optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
     warm_up_with_cosine_lr = lambda epoch: epoch / args.warm_up_epochs if epoch <= args.warm_up_epochs else 0.5 * (math.cos((epoch - args.warm_up_epochs) /(args.epoch - args.warm_up_epochs) * math.pi) + 1)
     scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=warm_up_with_cosine_lr)
 
