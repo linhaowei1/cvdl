@@ -20,12 +20,6 @@ import random
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 DATA_PATH = '/home/linhw/myproject/data_scene'
 
-def lr_schedule_func(epoch):
-    if epoch < 150:
-        return 0.001
-    else:
-        return 0.0001 
-
 class SceneDataset(Dataset):
     def __init__(self, annotations_csv, root_dir, transform=None):
         self.annotations = pd.read_csv(annotations_csv)
@@ -83,19 +77,7 @@ if __name__ == '__main__':
         
         model.to(cuda_device)
         
-        data_transform = {
-            "train": transforms.Compose([
-                                    transforms.ToPILImage(),
-                                    transforms.RandomResizedCrop(224),
-                                    transforms.RandomHorizontalFlip(),
-                                    transforms.ColorJitter(brightness=0.5, contrast=0.5, saturation=0.5, hue=0.5),
-                                    transforms.RandomGrayscale(p=0.1),
-                                    transforms.ToTensor()]),
-            "test": transforms.Compose([
-                                transforms.ToPILImage(),
-                                transforms.Resize(256),
-                                transforms.CenterCrop(224),
-                                transforms.ToTensor()])}
+        data_transform = dict()
 
         if args.mode == 'predict':
             data_transform['test'] = transforms.Compose([
