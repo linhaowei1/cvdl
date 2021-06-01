@@ -11,10 +11,7 @@ import torchvision.transforms as transforms
 import torchvision.models as models
 from torchvision.datasets import ImageFolder
 import json
-import torch
-import torch.nn as nn
 from skimage import io, color
-import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
 from efficientnet_pytorch import EfficientNet
 from torch.utils.data import random_split
@@ -28,7 +25,6 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 DATA_PATH = '/home/linhw/myproject/data_scene'
 
 import argparse
-from tqdm import tqdm
 from loguru import logger
 
 class LabelSmoothCELoss(nn.Module):
@@ -119,7 +115,7 @@ def test(model, dataloader, device):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='PyTorch Imagenette Training')
+    parser = argparse.ArgumentParser(description='Scene Classification Training')
     parser.add_argument('--device', default='cuda:0',
                         type=str, required=False, help='GPU ids')
     parser.add_argument('--epoch', default=350,
@@ -159,7 +155,7 @@ def main():
     ])
 
     transform_test = transforms.Compose([
-        transforms.ToPILImage(),
+        transforms.ToPILImage(), #适应自己编写的dataset
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor()
@@ -172,7 +168,7 @@ def main():
         whole_set2 = SceneDataset(annotations_csv='/home/linhw/myproject/data_scene/train_labels.csv',
                                 root_dir=train_dir,transform=transform_test)      
         whole_len = len(whole_set)
-        train_len = int(whole_len * 0.9)
+        train_len = int(whole_len * 0.9) #划分train和val数据集
         val_len = whole_len - train_len
         indices = random.sample(range(0, whole_len), train_len)
         indices2 = []
@@ -188,7 +184,7 @@ def main():
         testset = torch.utils.data.Subset(
                         SceneDataset(annotations_csv='/home/linhw/myproject/data_scene/train_labels.csv',
                                 root_dir=train_dir,transform=transform_test),
-                        range(8000))
+                        range(8000))    # when whole data is True, randomly choose 8000 training samples. Test acc here is training acc.
 
     trainloader = torch.utils.data.DataLoader(
         trainset, batch_size=batch_size, shuffle=True, num_workers=8)

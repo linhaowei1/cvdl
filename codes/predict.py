@@ -101,7 +101,6 @@ if __name__ == '__main__':
             test_num = len(test_set)
             print("using {} images for predicting.".format(test_num))
             model.eval()
-            acc = 0.0
             lst = []
             idx = []
             with torch.no_grad():
@@ -112,10 +111,8 @@ if __name__ == '__main__':
                     pred = torch.max(outp, dim=1)[1]
                     lst += pred.detach().cpu().numpy().tolist()
                     idx += test_labels.detach().cpu().numpy().tolist()
-                    acc += torch.eq(pred, test_labels.to(cuda_device)).sum().item()
             dat = pd.DataFrame({'Id': ['0007'+ '0'*(4-len(str(i)))+ str(i)+'.jpg' for i in range(len(test_set))], 'Category': lst})
             dat.to_csv(args.csv, index=False)
-            acc /= test_num
-            print("test acc = {:.5f}".format(acc))
+            print("predict finished!")
         else:
             raise NotImplementedError
